@@ -1,0 +1,32 @@
+# コンパイル済みクラスと出力
+/bin/
+/build/
+/out/
+/.gradle/
+
+# IDE（Eclipse, IntelliJ など）
+.idea/
+*.iml
+*.ipr
+*.iws
+*.class
+
+# OS特有のファイル
+.DS_Store
+Thumbs.db
+
+# Gradleラッパー以外のキャッシュ
+!gradle/wrapper/gradle-wrapper.jar
+
+# 環境ファイル
+src/main/resources/config.properties
+*.local.properties
+.env
+
+# ログファイルなど
+*.log
+
+# Javaビルド生成物
+*.war
+*.ear
+*.jar
