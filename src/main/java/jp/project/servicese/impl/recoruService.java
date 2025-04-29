@@ -19,7 +19,7 @@ public class recoruService implements Service {
 	}
 
 	@Override
-	public void executeSteps(WebDriver driver, int site) throws Exception {
+	public void executeSteps(WebDriver driver) throws Exception {
 		System.out.println("Executing Service A steps...");
 
 		// ステップ1: ログイン
@@ -27,7 +27,7 @@ public class recoruService implements Service {
 		login.login(driver, getServiceName());
 		// ステップ2: データ取得
 		System.out.println("Retrieving data from Service A");
-				action.action(driver, site);
+				action.action(driver);
 
 		// データ取得処理
 

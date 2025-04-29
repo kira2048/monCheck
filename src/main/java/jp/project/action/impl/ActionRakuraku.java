@@ -1,6 +1,8 @@
 package jp.project.action.impl;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.openqa.selenium.By;
@@ -19,11 +21,11 @@ public class ActionRakuraku implements Action {
 	private static final Duration WAIT_DURATION = Duration.ofSeconds(10); // 待機時間の共通定義
 
 	@Override
-	public void action(WebDriver driver, int site) throws InterruptedException {
+	public void action(WebDriver driver) throws InterruptedException {
 		WebDriverWait wait = new WebDriverWait(driver, WAIT_DURATION);
+		List<String> sites = new ArrayList<>();
 
 		try {
-			logger.info("アクションを開始します。");
 
 			// <frame>に切り替え
 			logger.info("フレーム切り替えを開始します。");
@@ -34,6 +36,7 @@ public class ActionRakuraku implements Action {
 			logger.info("交通費精算を開く処理を開始します。");
 			openNewTabAndSwitch(driver, wait);
 			logger.info("交通費精算を開きました。");
+			
 
 			// 修正画面を開く
 			logger.info("交通費精算画面を開く処理を開始します。");
@@ -43,38 +46,28 @@ public class ActionRakuraku implements Action {
 			SeleniumUtil.getLastWindow(driver, wait);
 			logger.info("交通費精算画面を開きました。");
 
-			// 「マイパターン」ボタンをクリック
-			logger.info("「マイパターン」ボタンのクリック処理を開始します。");
-			SeleniumUtil.clickElementByXPath(driver, wait,
-					"//p[contains(@class, 'denpyo-quick-mypattern')]/ancestor::button");
-			//			clickMyPatternButton(driver, wait);
-			logger.info("「マイパターン」ボタンを正常にクリックしました。");
+//			List<WebElement> meisaiList = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+//				    By.xpath("//tbody[starts-with(@id, 'meisai')]")));			
+//			System.out.println(meisaiList.toString());
+			
+			// 1. tbodyを表示待ちしてから取得
+			List<WebElement> tbodies = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+			    By.xpath("//tbody[starts-with(@id, 'meisai')]")
+			));
+			int tbodyCount = tbodies.size();
 
-			// 「マイパターン」ボタンをクリック
-			logger.info("「マイパターン一覧」画面を開く処理を実行します。");
-			SeleniumUtil.getLastWindow(driver, wait);
-			//			checkMyPatternButton(driver, wait);
-			logger.info("「マイパターン」ボタンを正常にクリックしました。");
-
-			if(site == 0) {
-				SeleniumUtil.clickElementByXPath(driver, wait, "//*[@id=\"kakutei_0_8591\"]");				
-			} else {
-				SeleniumUtil.clickElementByXPath(driver, wait, "//*[@id=\"kakutei_0_8913\"]");
+			// 2. 各inputを安全に取得
+			for (int i = 0; i < tbodyCount; i++) {
+			    List<WebElement> inputs = driver.findElements(By.xpath("//*[@id='meisai" + i + "']/tr[2]/td/table/tbody/tr/td[2]/input"));
+			    if (!inputs.isEmpty()) {
+			        sites.add(inputs.get(0).getAttribute("value"));
+			    } else {
+			        logger.warning("meisai" + i + " の input が見つかりませんでした。");
+			    }
 			}
-			SeleniumUtil.clickElementByXPath(driver, wait, "//*[@id=\"d_footer\"]/div[1]/button");
-			SeleniumUtil.getLastWindow(driver, wait);
-			WebElement element = driver.findElement(By.cssSelector(".meisaiGyo.d_meisai_gyo"));
-
-			// 要素のID属性を取得
-			String elementId = element.getDomProperty("id");
-
-			// 結果を出力
-			System.out.println("要素のID: " + elementId);
-			SeleniumUtil.sendkeyByXPath(driver, wait,
-					"//*[@id=\"" + elementId + "\"]/tr[1]/td[2]/table/tbody/tr/td[1]/div/div/input[1]");
-
-			SeleniumUtil.clickElementByXPath(driver, wait, "//*[@id=\"d_denpyo\"]/form/div/div[5]/div/button[3]");
-			Thread.sleep(5000);
+			
+			System.out.println(sites.toString());
+			System.out.println("tbodyの数: " + tbodyCount);
 
 			// 操作が終わったら元のページに戻す
 			logger.info("処理が完了しました");
@@ -131,15 +124,4 @@ public class ActionRakuraku implements Action {
 		}
 	}
 
-	private void switchBackToOriginalWindow(WebDriver driver) {
-		try {
-			String originalWindowHandle = driver.getWindowHandle();
-			logger.info("元のウィンドウに戻ります: " + originalWindowHandle);
-			driver.switchTo().window(originalWindowHandle);
-			logger.info("元のウィンドウに戻りました。");
-		} catch (Exception e) {
-			logger.severe("元のウィンドウに戻る中にエラーが発生しました: " + e.getMessage());
-			throw e;
-		}
-	}
 }

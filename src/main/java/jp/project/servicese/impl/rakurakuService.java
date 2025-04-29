@@ -20,7 +20,7 @@ public class rakurakuService implements Service {
 	}
 
 	@Override
-	public void executeSteps(WebDriver driver, int site) throws Exception {
+	public void executeSteps(WebDriver driver) throws Exception {
 		System.out.println("Executing " + getServiceName() + " steps...");
 
 		// ステップ1: ログイン
@@ -31,7 +31,7 @@ public class rakurakuService implements Service {
 		// ステップ2: データ取得
 		System.out.println("Retrieving data from " + getServiceName());
 		// データ取得処理
-		action.action(driver, site);
+//		action.action(driver);
 
 		// ステップ3: ログアウト
 		System.out.println("Logging out from " + getServiceName());

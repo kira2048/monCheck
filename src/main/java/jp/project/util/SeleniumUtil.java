@@ -107,4 +107,39 @@ public class SeleniumUtil {
 			throw e;
 		}
 	}
+
+	public static String getValueByXPath(WebDriverWait wait, String xpath) {
+		try {
+			// 指定されたXPathで要素を取得（表示されていることを確認）
+			WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
+
+			if (element != null && element.isDisplayed()) {
+				// value属性を取得
+				return element.getAttribute("value");
+			} else {
+				logger.info("要素が存在していません");
+				return null;
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	public static String getTextByXPath(WebDriverWait wait, String xpath) {
+	    try {
+	        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
+	        if (element != null && element.isDisplayed()) {
+	            return element.getText(); // テキストを取得
+	        } else {
+	            logger.info("要素が存在していません");
+	            return null;
+	        }
+	    } catch (Exception e) {
+	        throw e;
+	    }
+	}
+
+
+	
+	
 }

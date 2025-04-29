@@ -6,5 +6,5 @@ public interface Service {
 
 	String getServiceName();
 
-	void executeSteps(WebDriver driver, int site) throws Exception;
+	void executeSteps(WebDriver driver) throws Exception;
 }

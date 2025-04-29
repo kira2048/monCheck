@@ -1,0 +1,14 @@
+# 改行コードをLFに統一（Git上）
+*.java       text eol=lf
+*.properties text eol=lf
+*.sql        text eol=lf
+*.xml        text eol=lf
+*.yml        text eol=lf
+*.md         text eol=lf
+*.sh         text eol=lf
+
+# バイナリファイルは改行無変換
+*.png binary
+*.jpg binary
+*.pdf binary
+*.ico binary
