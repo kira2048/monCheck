@@ -1,5 +1,7 @@
 package jp.project.servicese.impl;
 
+import java.util.List;
+
 import org.openqa.selenium.WebDriver;
 
 import jp.project.action.impl.ActionRakuraku;
@@ -20,7 +22,7 @@ public class rakurakuService implements Service {
 	}
 
 	@Override
-	public void executeSteps(WebDriver driver) throws Exception {
+	public List<String> executeSteps(WebDriver driver) throws Exception {
 		System.out.println("Executing " + getServiceName() + " steps...");
 
 		// ステップ1: ログイン
@@ -31,11 +33,12 @@ public class rakurakuService implements Service {
 		// ステップ2: データ取得
 		System.out.println("Retrieving data from " + getServiceName());
 		// データ取得処理
-//		action.action(driver);
+		List<String> sites = action.action(driver);
 
 		// ステップ3: ログアウト
 		System.out.println("Logging out from " + getServiceName());
 		// ログアウト処理
+		return sites;
 	}
 
 }

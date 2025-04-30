@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import jp.project.action.Action;
+import jp.project.model.code.Sites;
 import jp.project.util.SeleniumUtil;
 
 public class ActionRakuraku implements Action {
@@ -21,7 +22,7 @@ public class ActionRakuraku implements Action {
 	private static final Duration WAIT_DURATION = Duration.ofSeconds(10); // 待機時間の共通定義
 
 	@Override
-	public void action(WebDriver driver) throws InterruptedException {
+	public List<String> action(WebDriver driver) throws InterruptedException {
 		WebDriverWait wait = new WebDriverWait(driver, WAIT_DURATION);
 		List<String> sites = new ArrayList<>();
 
@@ -46,10 +47,6 @@ public class ActionRakuraku implements Action {
 			SeleniumUtil.getLastWindow(driver, wait);
 			logger.info("交通費精算画面を開きました。");
 
-//			List<WebElement> meisaiList = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
-//				    By.xpath("//tbody[starts-with(@id, 'meisai')]")));			
-//			System.out.println(meisaiList.toString());
-			
 			// 1. tbodyを表示待ちしてから取得
 			List<WebElement> tbodies = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
 			    By.xpath("//tbody[starts-with(@id, 'meisai')]")
@@ -60,7 +57,11 @@ public class ActionRakuraku implements Action {
 			for (int i = 0; i < tbodyCount; i++) {
 			    List<WebElement> inputs = driver.findElements(By.xpath("//*[@id='meisai" + i + "']/tr[2]/td/table/tbody/tr/td[2]/input"));
 			    if (!inputs.isEmpty()) {
-			        sites.add(inputs.get(0).getAttribute("value"));
+			    		String code = Sites.fromText(inputs.get(0).getAttribute("value"));
+			    		if (code != null) {
+			    			sites.add(code); // ここでcodeを保存したいなら
+			    		}
+
 			    } else {
 			        logger.warning("meisai" + i + " の input が見つかりませんでした。");
 			    }
@@ -77,6 +78,7 @@ public class ActionRakuraku implements Action {
 			logger.severe("エラーが発生しました: " + e.getMessage());
 			e.printStackTrace();
 		}
+		return sites;
 	}
 
 	private void waitUntilFrameAvailableAndSwitchToIt(WebDriver driver, WebDriverWait wait) {
