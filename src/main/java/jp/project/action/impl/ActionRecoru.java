@@ -23,6 +23,7 @@ public class ActionRecoru implements Action {
 		List<String> sites = new ArrayList<>(); 
 
 		try {
+			
 
 			YearMonth thisMonth = YearMonth.now();
 			System.out.println(thisMonth);
