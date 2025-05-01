@@ -29,7 +29,13 @@ public class ConfigLoader {
             props.getProperty("recoru.id"),
             props.getProperty("recoru.password")
         );
+        
+        AppSettings.WebCredentials line = new AppSettings.WebCredentials(
+        		props.getProperty("line.user-id"),
+        		props.getProperty("line.token"),
+        		props.getProperty("line.url")
+        		);
 
-        return new AppSettings(email, rakuraku, recoru);
+        return new AppSettings(email, rakuraku, recoru, line);
     }
 }

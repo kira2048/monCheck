@@ -95,3 +95,9 @@ dependencies {
     implementation 'io.github.bonigarcia:webdrivermanager:5.7.0'
 	
 }
+apply plugin: 'application'
+
+application {
+    mainClass = 'jp.project.main.Main'
+}
+
