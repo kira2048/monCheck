@@ -16,6 +16,7 @@ import jp.project.model.code.Servicese;
 import jp.project.servicese.Service;
 import jp.project.servicese.impl.rakurakuService;
 import jp.project.servicese.impl.recoruService;
+import notice.LineBot;
 
 public class Main {
 	
@@ -66,6 +67,7 @@ public class Main {
 				System.out.println(sites1.size() == sites2.size());
 				
 				boolean result = sites1.equals(sites2);
+				LineBot.makeMessage(result);
 
 				System.out.println(result);
 
