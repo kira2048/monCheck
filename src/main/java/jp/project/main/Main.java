@@ -13,6 +13,7 @@ import org.openqa.selenium.WebDriver;
 
 import jp.project.config.ChromeDriverFactory;
 import jp.project.model.code.Servicese;
+import jp.project.notice.LineBot;
 import jp.project.servicese.Service;
 import jp.project.servicese.impl.rakurakuService;
 import jp.project.servicese.impl.recoruService;
@@ -66,7 +67,7 @@ public class Main {
 				System.out.println(sites1.size() == sites2.size());
 				
 				boolean result = sites1.equals(sites2);
-//				LineBot.makeMessage(result);
+				LineBot.makeMessage(result);
 
 				System.out.println(result);
 

@@ -1,4 +1,4 @@
-package notice;
+package jp.project.notice;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
