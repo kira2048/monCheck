@@ -69,8 +69,6 @@ public class Main {
 				boolean result = sites1.equals(sites2);
 				LineBot.makeMessage(result);
 
-				System.out.println(result);
-
 				// 共通のサイト
 				List<String> common = sites1.stream()
 						.filter(sites2::contains)

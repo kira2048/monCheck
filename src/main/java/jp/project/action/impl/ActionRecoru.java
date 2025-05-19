@@ -34,7 +34,8 @@ public class ActionRecoru implements Action {
 				String text = SeleniumUtil.getTextByXPath(wait, xpath);
 
 				String code = Sites.fromText(text);
-				if (code != null && !Sites.OFFSITEIN.getCode().equals(code)) {
+				if (code != null && !Sites.OFFSITEIN.getCode().equals(code) && !Sites.FULLREST.getCode().equals(code)) {
+					
 					sites.add(code); // ここでcodeを保存したいなら
 				}
 			}
