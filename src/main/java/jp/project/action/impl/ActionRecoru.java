@@ -24,20 +24,23 @@ public class ActionRecoru implements Action {
 
 		try {
 			
-
 			YearMonth thisMonth = YearMonth.now();
-			System.out.println(thisMonth);
-			int daysInMonth = thisMonth.lengthOfMonth(); // その月の日数（30とか31）
+			int daysInMonth = thisMonth.lengthOfMonth();
 
-			for (int day = 1; day <= daysInMonth; day++) {
-				String xpath = "//*[@id='ID-attendanceChartGadgetTable']/tbody/tr[" + day + "]/td[2]";
-				String text = SeleniumUtil.getTextByXPath(wait, xpath);
+			int day = 1;
+			int rowIndex = 1;
 
-				String code = Sites.fromText(text);
-				if (code != null && !Sites.OFFSITEIN.getCode().equals(code) && !Sites.FULLREST.getCode().equals(code)) {
-					
-					sites.add(code); // ここでcodeを保存したいなら
-				}
+			while (day <= daysInMonth) {
+			    String xpath = "//*[@id='ID-attendanceChartGadgetTable']/tbody/tr[" + rowIndex + "]/td[2]";
+			    String text = SeleniumUtil.getTextByXPath(wait, xpath);
+
+			    String code = Sites.fromText(text);
+			    if (code != null && !Sites.OFFSITEIN.getCode().equals(code) && !Sites.FULLREST.getCode().equals(code)) {
+			        sites.add(code); // 有効なコードなら追加
+			        day++; // 日付のカウントを進める
+			    }
+			    // 条件を満たさない（関係ない行）なら day は進めず、rowIndex だけ進めて次の行をチェック
+			    rowIndex++;
 			}
 
 
